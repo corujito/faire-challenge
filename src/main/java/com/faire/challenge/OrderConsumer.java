@@ -34,7 +34,7 @@ public class OrderConsumer {
         List<Item> notEnoughItems = new ArrayList<>();
         for (Item item : order.getItems()) {
             Option option = inventory.getOptions().get(item.getProductOptionId());
-            if (!option.getActive() || item.getQuantity() > option.getAvailableQuantity()) {
+            if (isNotFulfilled(item, option)) {
                 notEnoughItems.add(item);
             }
         }
@@ -47,6 +47,11 @@ public class OrderConsumer {
             // mark items that dont have enough inventory as backordered
             backorderItems(order, notEnoughItems);
         }
+    }
+
+    private boolean isNotFulfilled(Item item, Option option) {
+        return !option.getActive() || option.getAvailableQuantity() == null
+                || item.getQuantity() > option.getAvailableQuantity();
     }
 
     private void updateInventoryLevels(Order order) {

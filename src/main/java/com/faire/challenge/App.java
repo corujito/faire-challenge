@@ -57,7 +57,7 @@ public class App {
         Product product = inventory.getProducts().get(p);
         System.out.println("== The Best Selling Product ==");
         System.out.println(product + "\n");
-        
+
         product = MetricsUtil.findProductWithMostOptions(inventory.getProducts());
         System.out.println("== Product With Most Options ==");
         System.out.println(product + "\n");
