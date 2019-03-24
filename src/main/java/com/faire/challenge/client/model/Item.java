@@ -1,9 +1,12 @@
 package com.faire.challenge.client.model;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import com.faire.challenge.client.Constants;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -13,10 +16,12 @@ public class Item {
 
     @JsonProperty("id")
     private String id;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Constants.DATE_PATTERN)
     @JsonProperty("created_at")
-    private String createdAt;
+    private Date createdAt;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Constants.DATE_PATTERN)
     @JsonProperty("updated_at")
-    private String updatedAt;
+    private Date updatedAt;
     @JsonProperty("order_id")
     private String orderId;
     @JsonProperty("product_id")
@@ -51,22 +56,22 @@ public class Item {
     }
 
     @JsonProperty("created_at")
-    public String getCreatedAt() {
+    public Date getCreatedAt() {
         return createdAt;
     }
 
     @JsonProperty("created_at")
-    public void setCreatedAt(String createdAt) {
+    public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
 
     @JsonProperty("updated_at")
-    public String getUpdatedAt() {
+    public Date getUpdatedAt() {
         return updatedAt;
     }
 
     @JsonProperty("updated_at")
-    public void setUpdatedAt(String updatedAt) {
+    public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
     }
 

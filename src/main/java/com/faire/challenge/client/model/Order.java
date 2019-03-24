@@ -1,10 +1,13 @@
 package com.faire.challenge.client.model;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import com.faire.challenge.client.Constants;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -14,10 +17,12 @@ public class Order {
 
     @JsonProperty("id")
     private String id;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Constants.DATE_PATTERN)
     @JsonProperty("created_at")
-    private String createdAt;
+    private Date createdAt;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Constants.DATE_PATTERN)
     @JsonProperty("updated_at")
-    private String updatedAt;
+    private Date updatedAt;
     @JsonProperty("state")
     private State state;
     @JsonProperty("items")
@@ -26,8 +31,9 @@ public class Order {
     private List<Shipment> shipments = null;
     @JsonProperty("address")
     private Address address;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Constants.DATE_PATTERN)
     @JsonProperty("ship_after")
-    private String shipAfter;
+    private Date shipAfter;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -42,22 +48,22 @@ public class Order {
     }
 
     @JsonProperty("created_at")
-    public String getCreatedAt() {
+    public Date getCreatedAt() {
         return createdAt;
     }
 
     @JsonProperty("created_at")
-    public void setCreatedAt(String createdAt) {
+    public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
 
     @JsonProperty("updated_at")
-    public String getUpdatedAt() {
+    public Date getUpdatedAt() {
         return updatedAt;
     }
 
     @JsonProperty("updated_at")
-    public void setUpdatedAt(String updatedAt) {
+    public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
     }
 
@@ -102,12 +108,12 @@ public class Order {
     }
 
     @JsonProperty("ship_after")
-    public String getShipAfter() {
+    public Date getShipAfter() {
         return shipAfter;
     }
 
     @JsonProperty("ship_after")
-    public void setShipAfter(String shipAfter) {
+    public void setShipAfter(Date shipAfter) {
         this.shipAfter = shipAfter;
     }
 

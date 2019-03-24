@@ -1,9 +1,12 @@
 package com.faire.challenge.client.model;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import com.faire.challenge.client.Constants;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -13,10 +16,12 @@ public class Option {
 
     @JsonProperty("id")
     private String id;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Constants.DATE_PATTERN)
     @JsonProperty("created_at")
-    private String createdAt;
+    private Date createdAt;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Constants.DATE_PATTERN)
     @JsonProperty("updated_at")
-    private String updatedAt;
+    private Date updatedAt;
     @JsonProperty("active")
     private Boolean active;
     @JsonProperty("name")
@@ -27,8 +32,9 @@ public class Option {
     private String productId;
     @JsonProperty("available_quantity")
     private Integer availableQuantity;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Constants.DATE_PATTERN)
     @JsonProperty("backordered_until")
-    private String backorderedUntil;
+    private Date backorderedUntil;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -43,22 +49,22 @@ public class Option {
     }
 
     @JsonProperty("created_at")
-    public String getCreatedAt() {
+    public Date getCreatedAt() {
         return createdAt;
     }
 
     @JsonProperty("created_at")
-    public void setCreatedAt(String createdAt) {
+    public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
 
     @JsonProperty("updated_at")
-    public String getUpdatedAt() {
+    public Date getUpdatedAt() {
         return updatedAt;
     }
 
     @JsonProperty("updated_at")
-    public void setUpdatedAt(String updatedAt) {
+    public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
     }
 
@@ -113,12 +119,12 @@ public class Option {
     }
 
     @JsonProperty("backordered_until")
-    public String getBackorderedUntil() {
+    public Date getBackorderedUntil() {
         return backorderedUntil;
     }
 
     @JsonProperty("backordered_until")
-    public void setBackorderedUntil(String backorderedUntil) {
+    public void setBackorderedUntil(Date backorderedUntil) {
         this.backorderedUntil = backorderedUntil;
     }
 
@@ -134,7 +140,8 @@ public class Option {
 
     @Override
     public String toString() {
-        return "Option [id=" + id + ", name=" + name + ", sku=" + sku + ", productId=" + productId + "]";
+        return "Option [id=" + id + ", name=" + name + ", sku=" + sku + ", productId=" + productId
+                + ", availableQuantity=" + availableQuantity + "]";
     }
 
 }
