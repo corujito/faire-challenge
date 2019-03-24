@@ -10,6 +10,10 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.glassfish.jersey.client.HttpUrlConnectorProvider;
+import com.faire.challenge.client.model.BackorderInfo;
+import com.faire.challenge.client.model.InventoriesUpdateInput;
+import com.faire.challenge.client.model.InventoriesUpdateResponse;
+import com.faire.challenge.client.model.Inventory;
 import com.faire.challenge.client.model.Option;
 import com.faire.challenge.client.model.Order;
 import com.faire.challenge.client.model.OrdersResponse;
@@ -76,23 +80,22 @@ public class FaireAPIClient {
         return response.readEntity(Option.class);
     }
 
-    public List<Option> updateInventoryLevels() {
-        throw new UnsupportedOperationException("Not implemented, yet");
-        // Response response = webTarget
-        // .path("/products/options/inventory-levels")
-        // .request(MediaType.APPLICATION_JSON)
-        // .header(TOKEN, apiKey)
-        // .method("PATCH", Entity.entity(inventories, MediaType.APPLICATION_JSON));
-        // return response.readEntity(new GenericType<List<Option>>() {});
+    public List<Option> updateInventoryLevels(List<Inventory> inventories) {
+        Response response = webTarget
+                .path("/products/options/inventory-levels")
+                .request(MediaType.APPLICATION_JSON)
+                .header(TOKEN, apiKey)
+                .method("PATCH", Entity.entity(new InventoriesUpdateInput(inventories), MediaType.APPLICATION_JSON));
+        return response.readEntity(InventoriesUpdateResponse.class).getOptions();
     }
 
-    public void backorderItems(String orderId, Map<String, Map<String, String>> items) {
-        throw new UnsupportedOperationException("Not implemented, yet");
-        // webTarget
-        // .path("/orders/" + orderId + "/items/availability")
-        // .request(MediaType.APPLICATION_JSON)
-        // .header(TOKEN, apiKey)
-        // .post(Entity.entity(items, MediaType.APPLICATION_JSON));
+    public Order backorderItems(String orderId, Map<String, BackorderInfo> items) {
+        Response response = webTarget
+                .path("/orders/" + orderId + "/items/availability")
+                .request(MediaType.APPLICATION_JSON)
+                .header(TOKEN, apiKey)
+                .post(Entity.entity(items, MediaType.APPLICATION_JSON));
+        return response.readEntity(Order.class);
     }
 
     private ProductsResponse getProductsPaginated(int page, int limit) {
