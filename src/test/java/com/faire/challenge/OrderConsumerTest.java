@@ -50,8 +50,8 @@ public class OrderConsumerTest {
 
         consumer.consumeOrders(orders);
 
-        Assert.assertEquals(initialQuantity - item.getQuantity(), option.getAvailableQuantity().intValue());
-        verify(client, times(1)).updateProductOption(Mockito.anyString(), Mockito.any());
+        Assert.assertEquals((long) initialQuantity - item.getQuantity(), option.getAvailableQuantity().intValue());
+        verify(client, times(1)).updateInventoryLevels(Mockito.any());
         verify(client, times(1)).acceptOrder(order.getId());
     }
 

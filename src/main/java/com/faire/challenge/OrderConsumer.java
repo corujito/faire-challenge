@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import com.faire.challenge.client.FaireAPIClient;
+import com.faire.challenge.client.model.BackorderInfo;
+import com.faire.challenge.client.model.Inventory;
 import com.faire.challenge.client.model.Item;
 import com.faire.challenge.client.model.Option;
 import com.faire.challenge.client.model.Order;
@@ -34,6 +36,7 @@ public class OrderConsumer {
         List<Item> notEnoughItems = new ArrayList<>();
         for (Item item : order.getItems()) {
             Option option = inventory.getOptions().get(item.getProductOptionId());
+            // I am assuming here that a product option is not repeated inside items
             if (isNotFulfilled(item, option)) {
                 notEnoughItems.add(item);
             }
@@ -55,12 +58,14 @@ public class OrderConsumer {
     }
 
     private void updateInventoryLevels(Order order) {
+        List<Inventory> inventories = new ArrayList<>();
         for (Item item : order.getItems()) {
             Option option = inventory.getOptions().get(item.getProductOptionId());
-            option.setAvailableQuantity(option.getAvailableQuantity() - item.getQuantity());
-            client.updateProductOption(option.getId(), option);
+            Integer newQuantity = option.getAvailableQuantity() - item.getQuantity();
+            option.setAvailableQuantity(newQuantity);
+            inventories.add(new Inventory(newQuantity));
         }
-        // TODO: update multiple options at once (client.updateInventoryLevels)
+        client.updateInventoryLevels(inventories);
     }
 
     private void acceptsOrder(Order order) {
@@ -68,12 +73,10 @@ public class OrderConsumer {
     }
 
     private void backorderItems(Order order, List<Item> notEnoughItems) {
-        Map<String, Map<String, String>> backorderItems = new HashMap<>();
+        Map<String, BackorderInfo> backorderItems = new HashMap<>();
         for (Item item : notEnoughItems) {
-            Map<String, String> map = new HashMap<>();
-            map.put("available_quantity", item.getQuantity().toString());
-            backorderItems.put(item.getId(), map);
+            backorderItems.put(item.getId(), new BackorderInfo(item.getQuantity()));
         }
-        // TODO: client.backorderItems(order.getId(), backorderItems);
+        client.backorderItems(order.getId(), backorderItems);
     }
 }
