@@ -2,6 +2,7 @@ package com.faire.challenge;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import org.apache.log4j.Logger;
 import com.faire.challenge.client.FaireAPIClient;
 import com.faire.challenge.client.model.Option;
 import com.faire.challenge.client.model.Order;
@@ -14,13 +15,16 @@ import com.faire.challenge.metrics.MetricsUtil;
  */
 public class App {
 
+    private static final Logger LOGGER = Logger.getLogger(App.class);
+
     public static void main(String[] args) {
 
         if (args.length != 1) {
-            System.out.println("expected 1 parameter (api-key)");
+            LOGGER.error("expected 1 parameter (api-key)");
             return;
         }
 
+        // create API client
         String apiKey = args[0];
         FaireAPIClient client = new FaireAPIClient(apiKey);
 
@@ -42,24 +46,24 @@ public class App {
     private static void printMetrics(List<Order> orders, InventoryCache inventory) {
         String op = MetricsUtil.findBestSellingProductOption(orders);
         Option option = inventory.getOptions().get(op);
-        System.out.println("== The Best Selling Product Option ==");
-        System.out.println(option + "\n");
+        LOGGER.info("== The Best Selling Product Option ==");
+        LOGGER.info(option + "\n");
 
         Order order = MetricsUtil.findLargestOrderByDollarAmount(orders);
-        System.out.println("== Largest Order By Dollar Amount ==");
-        System.out.println(order + "\n");
+        LOGGER.info("== Largest Order By Dollar Amount ==");
+        LOGGER.info(order + "\n");
 
         State s = MetricsUtil.findTopStateOrders(orders);
-        System.out.println("== The State With The Most Orders ==");
-        System.out.println(s + "\n");
+        LOGGER.info("== The State With The Most Orders ==");
+        LOGGER.info(s + "\n");
 
         String p = MetricsUtil.findBestSellingProduct(orders);
         Product product = inventory.getProducts().get(p);
-        System.out.println("== The Best Selling Product ==");
-        System.out.println(product + "\n");
+        LOGGER.info("== The Best Selling Product ==");
+        LOGGER.info(product + "\n");
 
         product = MetricsUtil.findProductWithMostOptions(inventory.getProducts());
-        System.out.println("== Product With Most Options ==");
-        System.out.println(product + "\n");
+        LOGGER.info("== Product With Most Options ==");
+        LOGGER.info(product + "\n");
     }
 }
